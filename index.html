@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Previsão do Tempo</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  h1 {
+    font-size: 22px;
+  }
+  input, button {
+    font-size: 16px;
+    padding: 8px;
+  }
+  input {
+    width: 250px;
+  }
+  #resultado {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 15px;
+  }
+  .erro {
+    color: red;
+  }
+</style>
+</head>
+<body>
+
+<h1>Previsão do Tempo</h1>
+<p>Digite o nome de uma cidade:</p>
+
+<input type="text" id="cidade" placeholder="ex: Joinville">
+<button onclick="buscarCidade()">Buscar</button>
+
+<div id="resultado">Nenhuma busca feita ainda.</div>
+
+<script>
+
+  async function buscarCidade() {
+    const cidade = document.getElementById("cidade").value.trim();
+    const resultado = document.getElementById("resultado");
+
+    if (cidade === "") {
+      resultado.innerHTML = "<span class='erro'>Digite o nome de uma cidade.</span>";
+      return;
+    }
+
+    resultado.innerHTML = "Buscando...";
+
+    try {
+
+      const urlGeo = "https://geocoding-api.open-meteo.com/v1/search?name=" + encodeURIComponent(cidade) + "&count=1&language=pt";
+      const respostaGeo = await fetch(urlGeo);
+      const dadosGeo = await respostaGeo.json();
+
+      if (!dadosGeo.results || dadosGeo.results.length === 0) {
+        resultado.innerHTML = "<span class='erro'>Cidade não encontrada. Verifique o nome digitado.</span>";
+        return;
+      }
+
+      const local = dadosGeo.results[0];
+
+      const urlClima = "https://api.open-meteo.com/v1/forecast?latitude=" + local.latitude + "&longitude=" + local.longitude + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m";
+      const respostaClima = await fetch(urlClima);
+      const dadosClima = await respostaClima.json();
+      const clima = dadosClima.current;
+
+      resultado.innerHTML =
+        "<strong>" + local.name + ", " + local.country + "</strong><br>" +
+        "Temperatura: " + clima.temperature_2m + " °C<br>" +
+        "Umidade: " + clima.relative_humidity_2m + " %<br>" +
+        "Vento: " + clima.wind_speed_10m + " km/h";
+
+    } catch (erro) {
+      resultado.innerHTML = "<span class='erro'>Não foi possível buscar os dados. Verifique sua conexão.</span>";
+    }
+  }
+
+</script>
+
+</body>
+</html>
