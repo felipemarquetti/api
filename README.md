@@ -1,6 +1,6 @@
 # Climoscópio
 
-Página que busca uma cidade e mostra a previsão do tempo atual, usando a Open-Meteo.
+Página que busca uma cidade e mostra a previsão do tempo atual, usando Open-Meteo.
 
 ## 1. Qual API foi usada
 Open-Meteo — documentação em https://open-meteo.com/en/docs (previsão) e https://open-meteo.com/en/docs/geocoding-api (busca de cidade)
