@@ -17,7 +17,8 @@ seguido de
 Basta abrir o arquivo `index.html` em qualquer navegador. Não precisa de servidor, instalação nem login.
 
 ## 5. Print da tela funcionando
-![print da busca funcionando](print_api.png)
+![print da busca no postman funcionando](print_api_postman.png)
+![print da busca na web funcionando](print_api_web)
 
 ## 6. Uma dificuldade encontrada
 A busca da cidade (Joinville) devolveu mais listas de lugares do que o esperado, utilizei apenas as informações da latitude e longitude de uma local, exibindo informações como: temperatura, sensação térmica, umidade, vento, precipitação e o código da condição do tempo.
